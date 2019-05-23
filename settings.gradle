@@ -1,1 +1,4 @@
 include ':app'
+
+include ':spotifydata'
+project(':spotifydata').projectDir = new File('libs/SpotifyData')
