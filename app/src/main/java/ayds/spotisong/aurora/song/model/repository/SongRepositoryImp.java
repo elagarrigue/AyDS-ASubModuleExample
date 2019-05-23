@@ -1,7 +1,8 @@
 package ayds.spotisong.aurora.song.model.repository;
 
+import ayds.ak5.spotisong.song.external.SpotifySong;
 import ayds.spotisong.aurora.song.model.Song;
-import ayds.spotisong.aurora.song.model.repository.external.ExternalService;
+import ayds.ak5.spotisong.song.external.ExternalService;
 import ayds.spotisong.aurora.song.model.repository.local.LocalDB;
 
 class SongRepositoryImp implements SongRepository {
@@ -17,7 +18,7 @@ class SongRepositoryImp implements SongRepository {
   }
 
   @Override
-  public void searchSong(String query, SearchSongListener listener, SearchSongErrorListener errorListener){
+  public void searchSong(String query, SearchSongListener listener, SearchSongErrorListener errorListener) {
     new Thread(() -> {
       try {
         Song song = localDB.getSong(query);
@@ -25,7 +26,8 @@ class SongRepositoryImp implements SongRepository {
         if (song != null) {
           song.setSongName("[*] " + song.getSongName());
         } else {
-          song = externalService.getSong(query);
+          SpotifySong spotifySong = externalService.getSong(query);
+          song = adaptSpotiSong(spotifySong);
           localDB.saveSong(song);
         }
 
@@ -41,5 +43,12 @@ class SongRepositoryImp implements SongRepository {
   @Override
   public Song lastSongFound() {
     return lastSong;
+  }
+
+  private Song adaptSpotiSong(SpotifySong spotifySong) {
+    return new Song(spotifySong.getSongName(),
+                    spotifySong.getAlbumName(),
+                    spotifySong.getArtistName(),
+                    spotifySong.getAlbumName());
   }
 }

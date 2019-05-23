@@ -2,7 +2,7 @@ package ayds.spotisong.aurora.song.model.repository;
 
 import android.content.Context;
 
-import ayds.spotisong.aurora.song.model.repository.external.ExternalModule;
+import ayds.ak5.spotisong.song.external.ExternalModule;
 import ayds.spotisong.aurora.song.model.repository.local.LocalModule;
 
 public class RepositoryModule {
